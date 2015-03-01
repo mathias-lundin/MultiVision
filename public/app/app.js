@@ -7,10 +7,6 @@ angular.module('app').config(function($routeProvider, $locationProvider){
             '/',
             {
                 templateUrl: 'partials/main',
-                controller: 'mainController'
+                controller: 'mvMainController'
             })
-});
-
-angular.module('app').controller('mainController', function($scope) {
-    $scope.myVar = "Hello Angular";
 });

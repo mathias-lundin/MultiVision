@@ -1,0 +1,19 @@
+@import url("//fonts.googleapis.com/css?family=Lato:400,700,900,400italic");
+body {
+  font-family: Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  padding-top: 61px;
+}
+.navbar-header a.navbar-brand {
+  margin-top: -15px;
+  margin-bottom: 20px;
+}
+.navbar-header a.navbar-brand h6 {
+  color: #ccc;
+}
+footer {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+footer p {
+  border-top: 1px solid #d7e0e2;
+}
