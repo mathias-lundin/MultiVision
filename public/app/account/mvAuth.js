@@ -14,6 +14,24 @@ angular.module('app').factory('mvAuth', function ($http, mvIdentity, $q, mvUser)
         return deferred.promise;
     };
 
+    var updateCurrentUser = function(newUserData) {
+        var deferred = $q.defer();
+
+        //Clone the currentUser as we don't want our updates
+        // to go through unless the database update is successful.
+        var clone = angular.copy(mvIdentity.currentUser);
+        angular.extend(clone, newUserData);
+
+        clone.$update().then(function () { //$save unfortunately only uses POST
+            mvIdentity.currentUser = clone;
+            deferred.resolve();
+        }, function (response) {
+            deferred.reject(response.data.reason);
+        });
+
+        return deferred.promise;
+    };
+
     var authenticateUser = function (username, password) {
         var deferred = $q.defer();
         $http.post('/login', { username: username, password: password }).then(function (response) {
@@ -44,11 +62,21 @@ angular.module('app').factory('mvAuth', function ($http, mvIdentity, $q, mvUser)
         }
     };
 
+    var authorizeAuthenticatedUserForRoute = function () {
+        if(mvIdentity.isAuthenticated()) {
+            return true;
+        } else {
+            return $q.reject('not authorized');
+        }
+    };
+
     return {
         createUser: createUser,
+        updateCurrentUser: updateCurrentUser,
         authenticateUser: authenticateUser,
         logoutUser: logoutUser,
-        authorizeCurrentUserForRoute: authorizeCurrentUserForRoute
-    }
+        authorizeCurrentUserForRoute: authorizeCurrentUserForRoute,
+        authorizeAuthenticatedUserForRoute: authorizeAuthenticatedUserForRoute
+    };
 
 });
