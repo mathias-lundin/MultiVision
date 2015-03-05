@@ -1,5 +1,19 @@
 angular.module('app').factory('mvAuth', function ($http, mvIdentity, $q, mvUser) {
 
+    var createUser = function (newUserData) {
+      var newUser = new mvUser(newUserData),
+          deferred = $q.defer();
+
+        newUser.$save().then(function () {
+            mvIdentity.currentUser = newUser;
+            deferred.resolve();
+        }, function (response) {
+            deferred.reject(response.data.reason);
+        });
+
+        return deferred.promise;
+    };
+
     var authenticateUser = function (username, password) {
         var deferred = $q.defer();
         $http.post('/login', { username: username, password: password }).then(function (response) {
@@ -31,6 +45,7 @@ angular.module('app').factory('mvAuth', function ($http, mvIdentity, $q, mvUser)
     };
 
     return {
+        createUser: createUser,
         authenticateUser: authenticateUser,
         logoutUser: logoutUser,
         authorizeCurrentUserForRoute: authorizeCurrentUserForRoute
