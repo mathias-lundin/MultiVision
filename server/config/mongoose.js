@@ -1,7 +1,8 @@
 (function (mongooseConfig) {
 
     var mongoose = require('mongoose'),
-        userModel = require('../models/User');
+        userModel = require('../models/User'),
+        courseModel = require('../models/Course');
 
     mongooseConfig.init = function (config) {
         mongoose.connect(config.db);
@@ -12,14 +13,7 @@
         });
 
         userModel.createDefaultUsers();
+        courseModel.createDefaultCourses();
     };
 
 }(module.exports));
-
-
-/*var messageSchema = mongoose.Schema({ message: String });
- var Message = mongoose.model('Message', messageSchema);
- var mongoMessage;
- Message.findOne().exec(function (err, messageDoc) {
- mongoMessage = messageDoc.message;
- });*/
